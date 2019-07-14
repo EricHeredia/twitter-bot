@@ -14,12 +14,18 @@ const stream = client.stream('statuses/filter', {
 
 stream.on('data', (event) => {
   client.post('favorites/create', {id: event.id_str}, (error, res) => {
-    if(error) console.error(error)
-    console.log(`${res.id_str} Liked!!!`)
+    if(error) {
+      console.error(error[0].message)
+    } else {
+      console.log(`${res.id_str} Liked!!!`)
+    }
   })
   client.post('statuses/retweet/', {id: event.id_str}, (error, res) => {
-    if(error) console.error(error)
-    console.log(`${res.id_str} Retweeted!!!`)
+    if(error) {
+      console.error(error[0].message, '\n')
+    } else {
+      console.log(`${res.id_str} Retweeted!!! \n`)
+    }
   })
 })
 
