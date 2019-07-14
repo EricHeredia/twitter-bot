@@ -9,25 +9,35 @@ const client = new Twitter({
 })
 
 const stream = client.stream('statuses/filter', {
-  track: '#ReactJS, #React, #javascript, #webdev, #webdeveloper, #webdevelopment'
+  track: '#ReactJS, #javascript, #webdev, #webdevelopment'
 })
 
 stream.on('data', (event) => {
   client.post('favorites/create', {id: event.id_str}, (error, res) => {
     if(error) {
-      console.error(error[0].message)
+      if(error[0].message) {
+        console.error(error[0].message)
+      } else {
+        console.error(error)
+      }
     } else {
       console.log(`${res.id_str} Liked!!!`)
     }
   })
   client.post('statuses/retweet/', {id: event.id_str}, (error, res) => {
     if(error) {
-      console.error(error[0].message, '\n')
+      if (error[0].message) {
+        console.error(error[0].message, '\n')
+      } else {
+        console.error(error)
+      }
     } else {
       console.log(`${res.id_str} Retweeted!!! \n`)
     }
   })
 })
+
+stream.on('error', error => console.error(error))
 
 const retweet = () => {
   const params = {
