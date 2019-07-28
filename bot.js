@@ -12,6 +12,7 @@ const stream = client.stream('statuses/filter', {
   track: '#ReactJS, #javascript'
 })
 
+// Bot posting too much. 15% unfollow. Retweet and like better content.
 stream.on('data', (event) => {
   client.post('favorites/create', {id: event.id_str}, (error, res) => {
     if(error) {
